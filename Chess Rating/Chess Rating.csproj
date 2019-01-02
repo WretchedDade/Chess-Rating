@@ -5,6 +5,12 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>Chess_Rating</RootNamespace>
     <LangVersion>7.3</LangVersion>
+    <ApplicationIcon>Chess Icon.ico</ApplicationIcon>
+    <StartupObject>Chess_Rating.Program</StartupObject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>true</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Chess Icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="credentials.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
