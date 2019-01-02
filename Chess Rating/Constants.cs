@@ -17,6 +17,9 @@
         /// </summary>
         public static readonly string CredDataStoreLocation = "token.json";
 
+        public static readonly string AppScriptExecURL = @"https://script.google.com/macros/s/AKfycbwmHZ1RfKVmOlUg6tbMHVQkTMWA-I-guaQm-U1dNiq6-7eisjg/exec";
+        public static readonly string AppScriptDevURL = @"https://script.google.com/macros/s/AKfycbxoveGWLSV0rclxepJ_c_INyCC7-z125jMW5CiOD7E/dev";
+
         public static class Games
         {
             /// <summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using Chess_Rating.Models;
 using Google.Apis.Auth.OAuth2;
@@ -154,6 +155,14 @@ namespace Chess_Rating
             request.ValueInputOption = UpdateRequest.ValueInputOptionEnum.USERENTERED;
 
             request.Execute();
+
+            FormatSpreadsheet();
+        }
+
+        private async void FormatSpreadsheet()
+        {
+            using (var httpClient = new HttpClient())
+                await httpClient.GetAsync(Constants.AppScriptExecURL);
         }
     }
 }
