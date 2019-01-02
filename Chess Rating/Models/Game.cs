@@ -2,6 +2,8 @@
 {
     public class Game
     {
+        public Game() { }
+
         public Game(int id, Player winner, Player loser, bool wasStalement)
         {
             Id = id;

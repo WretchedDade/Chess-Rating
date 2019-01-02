@@ -16,45 +16,11 @@ namespace Chess_Rating
     public class ChessScoreboardAPI
     {
         /// <summary>
-        /// Range containing the list of games played
-        /// </summary>
-        private readonly string GamesRange;
-
-        /// <summary>
-        /// Range containting the list of available players
-        /// </summary>
-        private readonly string PlayersRange;
-
-        /// <summary>
-        /// Id for the Chess Scoreboard Spreadsheet
-        /// </summary>
-        private readonly string SpreadsheetId;
-
-        /// <summary>
-        /// Name of the app
-        /// </summary>
-        private readonly string AppName;
-
-        /// <summary>
-        /// Name of the DataStore to be creating on obtaining a user credential
-        /// </summary>
-        private readonly string CredDataStoreLocation;
-
-        /// <summary>
         /// The service used to make calls to the Google Sheets API
         /// </summary>
         private SheetsService SheetsService;
 
-        public ChessScoreboardAPI()
-        {
-            AppName = "Chess Scoreboard";
-            GamesRange = "Games!$A$2:$D$201";
-            PlayersRange = "Data!$A$2:$F$201";
-            CredDataStoreLocation = "token.json";
-            SpreadsheetId = "1EcjGl22n3CaxF9x0BJzPaNBxi8C3C-uMqWsxtmkkFTs";
-
-            EstablishConnectionToSpreasheet();
-        }
+        public ChessScoreboardAPI() => EstablishConnectionToSpreasheet();
 
         /// <summary>
         /// Obtains a <see cref="UserCredential"/> and sets the <see cref="SheetsService"/> field
@@ -65,7 +31,7 @@ namespace Chess_Rating
 
             using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
             {
-                var dataStore = new FileDataStore(CredDataStoreLocation, true);
+                var dataStore = new FileDataStore(Constants.CredDataStoreLocation, true);
                 var scopes = new List<string>() { SheetsService.Scope.Spreadsheets };
                 ClientSecrets clientSecrets = GoogleClientSecrets.Load(stream).Secrets;
 
@@ -75,7 +41,7 @@ namespace Chess_Rating
             var baseClientInitializer = new BaseClientService.Initializer()
             {
                 HttpClientInitializer = userCredential,
-                ApplicationName = AppName
+                ApplicationName = Constants.AppName
             };
 
             SheetsService = new SheetsService(baseClientInitializer);
@@ -94,11 +60,11 @@ namespace Chess_Rating
         /// <returns>All valid games belonging to any player in the passed list</returns>
         public IEnumerable<Game> GetGamesPlayed(List<Player> players)
         {
-            ValueRange response = SheetsService.Spreadsheets.Values.Get(SpreadsheetId, GamesRange).Execute();
+            ValueRange response = SheetsService.Spreadsheets.Values.Get(Constants.SpreadsheetId, Constants.Games.FullRange).Execute();
 
             foreach (IList<object> row in response.Values)
             {
-                if (string.IsNullOrWhiteSpace(row[0].ToString()) || string.IsNullOrWhiteSpace(row[1].ToString()) || string.IsNullOrWhiteSpace(row[2].ToString()))
+                if (row.Count == 0 || string.IsNullOrWhiteSpace(row[0].ToString()) || string.IsNullOrWhiteSpace(row[1].ToString()) || string.IsNullOrWhiteSpace(row[2].ToString()))
                     break;
 
                 int id = Convert.ToInt32(row[0]);
@@ -121,7 +87,7 @@ namespace Chess_Rating
         /// <returns>All available players on the ChessScoreboard</returns>
         public IEnumerable<Player> GetPlayers()
         {
-            GetRequest request = SheetsService.Spreadsheets.Values.Get(SpreadsheetId, PlayersRange);
+            GetRequest request = SheetsService.Spreadsheets.Values.Get(Constants.SpreadsheetId, Constants.Players.FullRange);
 
             ValueRange response = request.Execute();
 
@@ -134,7 +100,7 @@ namespace Chess_Rating
 
                 double rating = 400;
                 if (row.Count >= 6 && !string.IsNullOrWhiteSpace(row[5].ToString()))
-                 rating = Convert.ToDouble(row[5]);
+                    rating = Convert.ToDouble(row[5]);
 
                 yield return new Player(id, rating, row[1].ToString());
             }
@@ -143,18 +109,51 @@ namespace Chess_Rating
         public void UpdateRatingsInSpreadsheet(List<Player> players)
         {
             players = players.OrderBy(player => player.RankOnLoad).ToList();
-            
+
             var requestBody = new ValueRange
             {
                 Values = players.Select(player => new List<object>() { player.Rating } as IList<object>).ToList()
             };
 
-            string ratingsRange = $"Data!$F$2:$F${players.Count + 1}";
+            string ratingsRange = $"{Constants.Players.SheetName}!{Constants.Players.RatingColumn}$2:{Constants.Players.RatingColumn}${players.Count + 1}";
 
-            UpdateRequest request = SheetsService.Spreadsheets.Values.Update(requestBody, SpreadsheetId, ratingsRange);
+            UpdateSpreadsheet(requestBody, ratingsRange);
+        }
+
+        public void UpdatePlayersInSpreadsheet(List<Player> players)
+        {
+            players = players.OrderBy(player => player.RankOnLoad).ToList();
+
+            var requestBody = new ValueRange
+            {
+                Values = players.Select(player => new List<object>() { player.Name } as IList<object>).ToList()
+            };
+
+            string namesRange = $"{Constants.Players.SheetName}!{Constants.Players.NameColumn}$2:{Constants.Players.NameColumn}${players.Count + 1}";
+
+            UpdateSpreadsheet(requestBody, namesRange);
+
+            UpdateRatingsInSpreadsheet(players);
+        }
+
+        public void UpdateGamesInSpreadsheet(List<Game> games)
+        {
+            string gamesRange = $"{Constants.Games.SheetName}!{Constants.Games.WinnerColumn}$2:{Constants.Games.StalemateColumn}$";
+            gamesRange = games.Any() ? $"{gamesRange}{games.Count + 1}" : $"{gamesRange}{Constants.Games.LastRow}";
+
+
+            var requestBody = new ValueRange { Values = new List<IList<object>> { new List<object> { "", "", "" } } };
+            requestBody = new ValueRange { Values = games.Select(game => new List<object> { game.Winner.Name, game.Loser.Name, game.WasAStalemate } as IList<object>).ToList() };
+
+            UpdateSpreadsheet(requestBody, gamesRange);
+        }
+
+        private void UpdateSpreadsheet(ValueRange valueRange, string range)
+        {
+            UpdateRequest request = SheetsService.Spreadsheets.Values.Update(valueRange, Constants.SpreadsheetId, range);
             request.ValueInputOption = UpdateRequest.ValueInputOptionEnum.USERENTERED;
 
-            UpdateValuesResponse response = request.Execute();
+            request.Execute();
         }
     }
 }

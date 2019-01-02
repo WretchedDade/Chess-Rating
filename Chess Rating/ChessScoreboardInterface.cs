@@ -139,6 +139,21 @@ namespace Chess_Rating
             return AcceptableYesAnswers.Any(acceptableYesAnswer => acceptableYesAnswer.Equals(input, StringComparison.OrdinalIgnoreCase));
         }
 
+        private int ReadInt()
+        {
+            int number;
+            string input = ReadLine();
+
+            while (!int.TryParse(input, out number))
+            {
+                WriteLine();
+                WriteLine($"{input} is not a valid number. Please enter a valid number.");
+                input = ReadLine();
+            }
+
+            return number;
+        }
+
         private void PrintActionHeading(string heading)
         {
             Console.Clear();
@@ -276,22 +291,39 @@ namespace Chess_Rating
             PrintActionHeading("View Players");
 
             foreach (Player player in Players)
-                WriteLine($"-- {player.FirstName} is ranked #{player.CurrentRank} with an ELO rating of {player.Rating}");
+                WriteLine($"{player.CurrentRank}. {player.FirstName} is ranked #{player.CurrentRank} with an ELO rating of {player.Rating}");
 
             PrintHyphenLine();
+        }
+
+        private void PrintPlayers()
+        {
+            foreach (Player player in Players)
+                WriteLine($"{player.CurrentRank}. {player.FirstName}");
         }
 
         private void UpdatePlayerRatings()
         {
             PrintActionHeading("Update Player Ratings");
 
-            WriteLine("Should the spreadsheet automatically be updated to match the newly calculated ratings?");
-
-            bool updateSpreadsheet = ReadYesNoAnswer();
-
             WriteLine();
             WriteLine("Updating Player Ratings...");
 
+            UpdatePlayerRatingsCore();
+
+            WriteLine();
+            WriteLine("Updating the Spreadsheet with the new Player Ratings...");
+            ChessScoreboardAPI.UpdateRatingsInSpreadsheet(Players);
+
+            WriteLine();
+            WriteLine("Update Complete");
+
+            Clear();
+            ViewPlayers();
+        }
+
+        private void UpdatePlayerRatingsCore()
+        {
             if (Games.Any())
             {
                 (double WinnerUpdatedRating, double LoserUpdatedRating) updatedRatings;
@@ -315,42 +347,165 @@ namespace Chess_Rating
 
             for (int i = 0; i < Players.Count; i++)
                 Players[i].CurrentRank = i + 1;
-
-            if (updateSpreadsheet)
-            {
-                WriteLine();
-                UpdateSpreadsheetRatingsCore();
-            }
-
-            WriteLine();
-            WriteLine("Update Complete");
-
-            WriteLine();
-            WriteLine("Would you like to go ahead and view the updated player standings?");
-
-            bool viewPlayers = ReadYesNoAnswer();
-
-            if (viewPlayers)
-                ViewPlayers();
-        }
-
-        private void UpdateSpreadsheetRatings()
-        {
-            PrintActionHeading("Update Spreadsheet Player Ratings");
-
-            UpdateSpreadsheetRatingsCore();
-
-            WriteLine("Update Complete");
-        }
-
-        private void UpdateSpreadsheetRatingsCore()
-        {
-            WriteLine("Updating the Spreadsheet with the new Player Ratings...");
-
-            ChessScoreboardAPI.UpdateRatingsInSpreadsheet(Players);
         }
 
         private void ToggleWriteLineAnimation() => UseAnimatedWriteLine = !UseAnimatedWriteLine;
+
+        private void AddGame()
+        {
+            PrintActionHeading("Add Game");
+
+            var game = new Game();
+
+            WriteLine();
+            WriteLine("Was the game a stalemate?");
+            game.WasAStalemate = ReadYesNoAnswer();
+
+            PrintHyphenLine();
+            WriteLine();
+            WriteLine("Avaiable Players");
+            PrintHyphenLine("Avaiable Players");
+            PrintPlayers();
+            PrintHyphenLine();
+
+            
+
+            int winnerNumber, loserNumber;
+
+            if (game.WasAStalemate)
+            {
+                WriteLine();
+                WriteLine("In the above list, what number was player one?");
+                winnerNumber = ReadInt();
+
+                WriteLine();
+                WriteLine("In the above list, what number was player two?");
+                loserNumber = ReadInt();
+            }
+            else
+            {
+                WriteLine();
+                WriteLine("In the above list, what number was the winner?");
+                winnerNumber = ReadInt();
+
+                WriteLine();
+                WriteLine("In the above list, what number was the loser?");
+                loserNumber = ReadInt();
+            }
+
+            Player winner, loser;
+            winner = Players.FirstOrDefault(player => player.CurrentRank == winnerNumber);
+            loser = Players.FirstOrDefault(player => player.CurrentRank == loserNumber);
+
+            while (winner == null || loser == null)
+            {
+                Clear();
+
+                PrintHyphenLine();
+                WriteLine("Unable to find one or both of the players for the numbers specified. If you do not see a player in the list please add one using the add player action");
+                WriteLine("Try again?");
+                bool tryAgain = ReadYesNoAnswer();
+
+                if (tryAgain)
+                {
+                    if (game.WasAStalemate)
+                    {
+                        WriteLine();
+                        WriteLine("In the above list, what number was player one?");
+                        winnerNumber = ReadInt();
+
+                        WriteLine();
+                        WriteLine("In the above list, what number was player two?");
+                        loserNumber = ReadInt();
+                    }
+                    else
+                    {
+                        WriteLine();
+                        WriteLine("In the above list, what number was the winner?");
+                        winnerNumber = ReadInt();
+
+                        WriteLine();
+                        WriteLine("In the above list, what number was the loser?");
+                        loserNumber = ReadInt();
+                    }
+
+                    winner = Players.FirstOrDefault(player => player.CurrentRank == winnerNumber);
+                    loser = Players.FirstOrDefault(player => player.CurrentRank == loserNumber);
+                }
+                else
+                {
+                    Clear();
+                    return;
+                }
+            }
+
+            game.Winner = winner;
+            game.Loser = loser;
+
+            Games.Add(game);
+
+            WriteLine();
+            WriteLine("Updating ratings based on added game...");
+            UpdatePlayerRatingsCore();
+            WriteLine("Complete");
+
+            WriteLine();
+            WriteLine("Updating collection of games in spreadsheet...");
+            ChessScoreboardAPI.UpdateGamesInSpreadsheet(Games);
+            WriteLine("Complete");
+
+            WriteLine();
+            WriteLine("Updating collection of players in spreadsheet...");
+            ChessScoreboardAPI.UpdateRatingsInSpreadsheet(Players);
+            WriteLine("Complete");
+
+            Clear();
+        }
+
+        private void ClearGames()
+        {
+            PrintActionHeading("Clear Games");
+
+            WriteLine();
+            WriteLine("Clearing list of games...");
+            Games = new List<Game>();
+            WriteLine("Complete");
+
+            WriteLine();
+            WriteLine("Reseting player ratings");
+            UpdatePlayerRatingsCore();
+            WriteLine("Complete");
+
+            WriteLine();
+            WriteLine("Updating collection of games in spreadsheet...");
+            ChessScoreboardAPI.UpdateGamesInSpreadsheet(Games);
+            WriteLine("Complete");
+
+            WriteLine();
+            WriteLine("Updating collection of players in spreadsheet...");
+            ChessScoreboardAPI.UpdateRatingsInSpreadsheet(Players);
+            WriteLine("Complete");
+
+            Clear();
+        }
+
+        private void AddPlayer()
+        {
+            PrintActionHeading("Add Player");
+
+            WriteLine();
+            WriteLine("What is the name of the player you would like to add?");
+
+            string playerName = ReadLine();
+
+            var player = new Player(Players.Max(p => p.CurrentRank) + 1, 400, playerName);
+            Players.Add(player);
+
+            ChessScoreboardAPI.UpdatePlayersInSpreadsheet(Players);
+
+            Clear();
+            ViewPlayers();
+        }
         #endregion User Actions
 
         #region Properties
@@ -377,8 +532,10 @@ namespace Chess_Rating
                     (nameof(ViewPlayers), "View players currently stored in memory", new Action(ViewPlayers), new List<string>(){ "P", "Players" }),
                     (nameof(RefreshData),"Refreshes the list of games and players currently stored in memory to match those in the ChessScoreboard Spreadsheet.", new Action(RefreshData), new List<string>(){ "R", "Refresh"}),
                     (nameof(UpdatePlayerRatings), "Recalculates each players ratings based on the list of games currently in memory.", new Action(UpdatePlayerRatings), new List<string>(){ "RC", "Recalculate", "Calculate", "Calc", "Recalc" }),
-                    (nameof(UpdateSpreadsheetRatings), "Updates the ChessScoreboard Spreadsheet with the ratings for each player stored in memory", new Action(UpdateSpreadsheetRatings), new List<string>(){"U", "Update"}),
-                    (nameof(ToggleWriteLineAnimation), "Toggles the use of the animated WriteLine method used to output a character at a time", new Action(ToggleWriteLineAnimation), new List<string>(){ "T", "Toggle" })
+                    (nameof(ToggleWriteLineAnimation), "Toggles the use of the animated WriteLine method used to output a character at a time", new Action(ToggleWriteLineAnimation), new List<string>(){ "T", "Toggle" }),
+                    (nameof(AddGame), "Add's a new game to the collection of games!", new Action(AddGame), new List<string>(){ "AG" }),
+                    (nameof(AddPlayer), "Add's a new game to the collection of games!", new Action(AddPlayer), new List<string>(){ "AP" }),
+                    (nameof(ClearGames), "Add's a new game to the collection of games!", new Action(ClearGames), new List<string>(){ "CG" }),
                 };
             }
         }
