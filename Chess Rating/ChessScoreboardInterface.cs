@@ -326,8 +326,10 @@ namespace Chess_Rating
         {
             if (Games.Any())
             {
+                ResetRatings();
+
                 (double WinnerUpdatedRating, double LoserUpdatedRating) updatedRatings;
-                var ratingCalculator = new RatingCalculator(kFactor: 100, baseRating: 400);
+                var ratingCalculator = new RatingCalculator(kFactor: 100, baseRating: Constants.BaseRating);
 
                 foreach (Game game in Games)
                 {
@@ -340,7 +342,7 @@ namespace Chess_Rating
             else
             {
                 foreach (Player player in Players)
-                    player.Rating = 400;
+                    player.Rating = Constants.BaseRating;
             }
 
             Players = Players.OrderByDescending(player => player.Rating).ThenBy(player => player.FirstName).ToList();
@@ -348,6 +350,8 @@ namespace Chess_Rating
             for (int i = 0; i < Players.Count; i++)
                 Players[i].CurrentRank = i + 1;
         }
+
+        private void ResetRatings() => Players.ForEach(player => player.Rating = Constants.BaseRating);
 
         private void ToggleWriteLineAnimation() => UseAnimatedWriteLine = !UseAnimatedWriteLine;
 
@@ -368,7 +372,7 @@ namespace Chess_Rating
             PrintPlayers();
             PrintHyphenLine();
 
-            
+
 
             int winnerNumber, loserNumber;
 
@@ -498,7 +502,7 @@ namespace Chess_Rating
 
             string playerName = ReadLine();
 
-            var player = new Player(Players.Max(p => p.CurrentRank) + 1, 400, playerName);
+            var player = new Player(Players.Max(p => p.CurrentRank) + 1, Constants.BaseRating, playerName);
             Players.Add(player);
 
             ChessScoreboardAPI.UpdatePlayersInSpreadsheet(Players);

@@ -99,7 +99,7 @@ namespace Chess_Rating
 
                 int id = Convert.ToInt32(row[0]);
 
-                double rating = 400;
+                double rating = Constants.BaseRating;
                 if (row.Count >= 6 && !string.IsNullOrWhiteSpace(row[5].ToString()))
                     rating = Convert.ToDouble(row[5]);
 

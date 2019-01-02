@@ -17,8 +17,20 @@
         /// </summary>
         public static readonly string CredDataStoreLocation = "token.json";
 
+        /// <summary>
+        /// The prod url to make a REST request to the the APP script behind the spreadsheet (Prod implies the most recent 'version' of the script)
+        /// </summary>
         public static readonly string AppScriptExecURL = @"https://script.google.com/macros/s/AKfycbwmHZ1RfKVmOlUg6tbMHVQkTMWA-I-guaQm-U1dNiq6-7eisjg/exec";
+
+        /// <summary>
+        /// The dev url to make a REST request to the the APP script behind the spreadsheet (Dev implies most recent save of script ignoring versions)
+        /// </summary>
         public static readonly string AppScriptDevURL = @"https://script.google.com/macros/s/AKfycbxoveGWLSV0rclxepJ_c_INyCC7-z125jMW5CiOD7E/dev";
+
+        /// <summary>
+        /// The base rating for every player
+        /// </summary>
+        public static readonly int BaseRating = 400;
 
         public static class Games
         {
