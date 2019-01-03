@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using Chess_Rating.Helpers;
-using Chess_Rating.Models;
+using ChessScoreboard.Core;
+using ChessScoreboard.Core.Models;
 
-namespace Chess_Rating
+namespace ChessScoreboard.Desktop
 {
     public partial class ChessScoreboardInterface
     {

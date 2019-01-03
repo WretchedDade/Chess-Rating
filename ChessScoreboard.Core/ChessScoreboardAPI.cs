@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
-using Chess_Rating.Models;
+using ChessScoreboard.Core.Models;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
@@ -12,7 +12,7 @@ using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
 using static Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource;
 
-namespace Chess_Rating.Helpers
+namespace ChessScoreboard.Core
 {
     public class ChessScoreboardAPI
     {

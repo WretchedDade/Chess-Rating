@@ -1,4 +1,4 @@
-﻿namespace Chess_Rating.Models
+﻿namespace ChessScoreboard.Core.Models
 {
     public class Player
     {

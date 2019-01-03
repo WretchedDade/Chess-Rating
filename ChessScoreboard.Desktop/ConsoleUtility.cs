@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace Chess_Rating.Helpers
+namespace ChessScoreboard.Desktop
 {
     public static class ConsoleUtility
     {
