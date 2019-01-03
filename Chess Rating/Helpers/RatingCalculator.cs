@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Chess_Rating
+namespace Chess_Rating.Helpers
 {
     /// <summary>
     /// A class to calculate the new rating for a games winner and loser based on the Elo Rating System.

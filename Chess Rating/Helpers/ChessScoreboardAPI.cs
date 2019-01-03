@@ -12,7 +12,7 @@ using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
 using static Google.Apis.Sheets.v4.SpreadsheetsResource.ValuesResource;
 
-namespace Chess_Rating
+namespace Chess_Rating.Helpers
 {
     public class ChessScoreboardAPI
     {
