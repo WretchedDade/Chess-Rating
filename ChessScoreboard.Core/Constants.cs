@@ -1,4 +1,4 @@
-﻿namespace Chess_Rating
+﻿namespace ChessScoreboard.Core
 {
     public static class Constants
     {
