@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28407.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6178FC6C-E55B-4E18-8D92-B2E81AA6CBBA}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessScoreboard.Core", "ChessScoreboard.Core\ChessScoreboard.Core.csproj", "{D620CD5E-E67B-46D2-86A8-C3C1495E0A62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessScoreboard.Core", "ChessScoreboard.Core\ChessScoreboard.Core.csproj", "{D620CD5E-E67B-46D2-86A8-C3C1495E0A62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessScoreboard.Desktop", "ChessScoreboard.Desktop\ChessScoreboard.Desktop.csproj", "{8741D5C4-C309-43BE-92ED-2D6ABEAD5D87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessScoreboard.Desktop", "ChessScoreboard.Desktop\ChessScoreboard.Desktop.csproj", "{8741D5C4-C309-43BE-92ED-2D6ABEAD5D87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
