@@ -88,9 +88,11 @@ namespace ChessScoreboard.Desktop
         /// Writes a line of text to the console
         /// </summary>
         /// <param name="message">Text to be written to the console</param>
-        public static void WriteLine(string message)
+        public static void WriteLine(string message, bool padConsole = true)
         {
-            PadConsole();
+            if (padConsole)
+                PadConsole();
+
             WriteLineMethod(message);
         }
 
@@ -139,7 +141,7 @@ namespace ChessScoreboard.Desktop
         /// Print's a line of hyphens the width of the passed value
         /// </summary>
         /// <param name="width">The number of character's wide the line should be</param>
-        public static void WriteHyphenLine(int width) => WriteLine("".PadLeft(width, '-'));
+        public static void WriteHyphenLine(int width) => WriteLine("".PadLeft(width, '-'), false);
         #endregion Writing
 
         #region Reading
