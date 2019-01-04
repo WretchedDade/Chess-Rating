@@ -34,39 +34,20 @@
     </nav>
 
     <main>
-        <!--Add buttons to initiate auth sequence and sign out-->
-        <button id="authorize_button" style="display: none;">Authorize</button>
-        <button id="signout_button" style="display: none;">Sign Out</button>
-
         <pre id="content" style="white-space: pre-wrap;"></pre>
 
-        <table class="table table-striped">
-            <thead class="table-primary">
-                <tr>
-                    <th scope="col">Type</th>
-                    <th scope="col">Column heading</th>
-                    <th scope="col">Column heading</th>
-                    <th scope="col">Column heading</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">Default</th>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                    <td>Column content</td>
-                </tr>
-            </tbody>
+        <table id="Games" class="table table-striped">
+            <thead class="table-primary"></thead>
+            <tbody></tbody>
         </table>
     </main>
-        
+
     <script src="JS/Jquery-3.3.1.slim.min.js"></script>
     <script src="JS/Popper.min.js"></script>
     <script src="JS/Bootstrap.min.js"></script>
     <script src="JS/ChessScoreboard.js"></script>
     <script src="JS/SheetsInterface.js"></script>
-    <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()"
-        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    <script async defer src="https://apis.google.com/js/api.js" onload="init()" onreadystatechange="if (this.readyState === 'complete') this.onload()">
     </script>
 </body>
 
