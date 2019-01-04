@@ -1,0 +1,22 @@
+body main{
+    padding: 20px;
+    padding-top: 60px;
+}
+
+nav {
+    height: 40px;
+}
+
+nav #ChessLogo {
+    background-image: url("../IMG/ChessLogo.png");
+    background-position: center;
+    background-size: 100px 100px;
+    border: 10px solid white;
+    height: 120px;
+    width: 120px;
+}
+
+nav #ChessLogoDiv{
+    left: Calc(Calc(100% - 120px) / 2);
+    position: absolute;
+}

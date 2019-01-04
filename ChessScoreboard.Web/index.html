@@ -3,31 +3,12 @@
 
 <head>
     <title>Chess Scoreboard</title>
-    <!-- Required meta tags -->
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://bootswatch.com/4/materia/bootstrap.min.css" />
-    <style>
-        nav {
-            height: 50px;
-        }
-
-        nav #ChessLogo {
-            background-image: url("ChessLogo.png");
-            background-position: center;
-            background-size: 110px 110px;
-            border: 10px solid white;
-            height: 120px;
-            width: 120px;
-        }
-
-        nav #ChessLogoDiv{
-            left: Calc(Calc(100% - 120px) / 2);
-            position: absolute;
-        }
-    </style>
+    <link rel="stylesheet" href="CSS/Bootstrap.Flatly.min.css" />
+    <link rel="stylesheet" href="CSS/ChessScoreboard.css" />
 </head>
 
 <body>
@@ -51,32 +32,41 @@
             </ul>
         </div>
     </nav>
-    <!-- <nav class="navbar navbar-expand-sm navbar-dark bg-primary">
-          <a class="navbar-brand" href="#">Chess Scoreboard</a>
-          <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#ChessScoreboardNav" aria-controls="ChessScoreboardNav"
-              aria-expanded="false" aria-label="Toggle navigation"></button>
-          <div class="collapse navbar-collapse" id="ChessScoreboardNav">
-              <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                  <li class="nav-item">
-                      <a class="nav-link" onclick="AddGame()" href="#">Add Game</a>
-                  </li>
-                  <li class="nav-item">
-                      <a class="nav-link" onclick="AddPlayer()" href="#">Add Player</a>
-                  </li>
-              </ul>
-          </div>
-      </nav> -->
 
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
+    <main>
+        <!--Add buttons to initiate auth sequence and sign out-->
+        <button id="authorize_button" style="display: none;">Authorize</button>
+        <button id="signout_button" style="display: none;">Sign Out</button>
 
-    <script>
+        <pre id="content" style="white-space: pre-wrap;"></pre>
 
+        <table class="table table-striped">
+            <thead class="table-primary">
+                <tr>
+                    <th scope="col">Type</th>
+                    <th scope="col">Column heading</th>
+                    <th scope="col">Column heading</th>
+                    <th scope="col">Column heading</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">Default</th>
+                    <td>Column content</td>
+                    <td>Column content</td>
+                    <td>Column content</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+        
+    <script src="JS/Jquery-3.3.1.slim.min.js"></script>
+    <script src="JS/Popper.min.js"></script>
+    <script src="JS/Bootstrap.min.js"></script>
+    <script src="JS/ChessScoreboard.js"></script>
+    <script src="JS/SheetsInterface.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()"
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
     </script>
 </body>
 
