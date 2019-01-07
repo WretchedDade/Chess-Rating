@@ -4,6 +4,7 @@ body main{
 }
 
 nav {
+    border-bottom: 2px solid white;
     height: 40px;
 }
 
@@ -19,4 +20,8 @@ nav #ChessLogo {
 nav #ChessLogoDiv{
     left: Calc(Calc(100% - 120px) / 2);
     position: absolute;
+}
+
+#WinnerNumber, #LoserNumber{
+    width: 185px;
 }
