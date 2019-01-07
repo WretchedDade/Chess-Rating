@@ -43,6 +43,8 @@ class SheetsTable {
 
     RefreshTable() {
         return new Promise((resolve, reject) => {
+            this.Clear();
+
             var startingIndex = this.HeadingsDefinedByUser ? 0 : 1;
 
             if (this.HeadingsDefinedByUser)
@@ -66,6 +68,11 @@ class SheetsTable {
         });
     }
 
+    Clear() {
+        $(this.THeadSelector).empty();
+        $(this.TBodySelector).empty();
+    }
+
     AppendHeaderRow(headerRow) {
         var ths = '';
         for (var i = 0; i < headerRow.length; i++)
@@ -76,8 +83,12 @@ class SheetsTable {
 
     AppendRow(row) {
         var tds = '';
-        for (var i = 0; i < row.length; i++)
-            tds += `<td>${row[i]}</td>`;
+        for (var i = 0; i < row.length; i++) {
+            // if (row[i].toLowerCase() === 'true' || row[i].toLowerCase() === 'false')
+            //     tds +=`<td><input class="form-check-input" type="checkbox" ${row[i] == 'true' ? 'checked' : ''} disabled/></td>`
+            // else
+                tds += `<td>${row[i]}</td>`;
+        }
 
         this.AppendTableRow(tds, this.TBodySelector);
     }
@@ -95,7 +106,7 @@ class SheetsTable {
 
         var parent = this;
         this.Sheet.Put(this.Range, valueRangeBody).then(function (response) {
-            parent.Sheet.GetAppScript();
+            $.get(parent.Sheet.AppScriptUrl);
             parent.Refresh();
         });
     }

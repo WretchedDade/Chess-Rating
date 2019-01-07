@@ -1,6 +1,10 @@
-body main{
+body main {
     padding: 20px;
     padding-top: 60px;
+}
+
+a {
+    cursor: pointer;
 }
 
 nav {
@@ -17,11 +21,12 @@ nav #ChessLogo {
     width: 120px;
 }
 
-nav #ChessLogoDiv{
+nav #ChessLogoDiv {
     left: Calc(Calc(100% - 120px) / 2);
     position: absolute;
 }
 
-#WinnerNumber, #LoserNumber{
+#WinnerNumber,
+#LoserNumber {
     width: 185px;
 }

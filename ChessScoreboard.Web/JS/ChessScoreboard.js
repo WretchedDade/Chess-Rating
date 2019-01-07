@@ -37,9 +37,8 @@ function addGame(event) {
     var winner = AddGamePlayersTable.Values[winnerNumber - 1][1];
     var loser = AddGamePlayersTable.Values[loserNumber - 1][1];
 
-    var values = ['=row() - 1', winner, loser, wasStalemate]
+    var values = [GamesTable.Values.length + 1, winner, loser, wasStalemate]
 
-    console.log(values);
     GamesTable.AddRow(values);
 
     $('#AddGameModal').modal('hide');
