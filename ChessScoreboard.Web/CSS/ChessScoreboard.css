@@ -30,3 +30,25 @@ nav #ChessLogoDiv {
 #LoserNumber {
     width: 185px;
 }
+
+section{
+    border: 2px solid gray;
+}
+
+section a{
+    align-items: center;
+    border-bottom: 2px dashed gray;
+    display: flex;
+    font-size: 1.5em;
+    justify-content: space-between;
+    width: 100%;
+}
+
+section a:hover{
+    text-decoration: none;
+}
+
+section a:focus{
+    box-shadow: none !important;
+    outline: 0;
+}

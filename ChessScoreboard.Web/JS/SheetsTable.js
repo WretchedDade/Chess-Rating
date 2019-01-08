@@ -1,10 +1,15 @@
+const faSize = 'fa fa-2x';
+const faSquare = `${faSize} fa-square`;
+const faCheckSqare = `${faSize} fa-check-square`;
+
 class SheetsTable {
-    constructor(range, sheet, tableSelector, headings) {
+    constructor(range, sheet, tableSelector, headings, refreshFunction) {
         this.Range = range;
         this.Sheet = sheet;
         this.TableSelector = tableSelector;
         this.THeadSelector = `${this.TableSelector} thead`;
         this.TBodySelector = `${this.TableSelector} tbody`;
+        this.RefreshFunction = refreshFunction;
 
         if (headings) {
             this.Headings = headings;
@@ -28,7 +33,9 @@ class SheetsTable {
                 return;
             }
 
-            parent.RefreshTable();
+            parent.RefreshTable().then(function () {
+                setTimeout(parent.RefreshFunction, 25);
+            });
         });
     }
 
@@ -76,18 +83,25 @@ class SheetsTable {
     AppendHeaderRow(headerRow) {
         var ths = '';
         for (var i = 0; i < headerRow.length; i++)
-            ths += `<th>${headerRow[i]}</th>`;
+            ths += `<th class="text-center">${headerRow[i]}</th>`;
 
         this.AppendTableRow(ths, this.THeadSelector);
     }
 
     AppendRow(row) {
+
+        var value;
         var tds = '';
+
         for (var i = 0; i < row.length; i++) {
-            // if (row[i].toLowerCase() === 'true' || row[i].toLowerCase() === 'false')
-            //     tds +=`<td><input class="form-check-input" type="checkbox" ${row[i] == 'true' ? 'checked' : ''} disabled/></td>`
-            // else
-                tds += `<td>${row[i]}</td>`;
+            value = row[i].toLowerCase();
+
+            if (value === 'true' || value === 'false')
+                tds += `<td class="text-center text-primary align-middle"><i class="${value == 'true' ? faCheckSqare : faSquare}"></i></td>`;
+            else if (isNaN(value) && !value.includes('%'))
+                tds += `<td class="align-middle">${row[i]}</td>`;
+            else
+                tds += `<td class="text-center align-middle">${row[i]}</td>`;
         }
 
         this.AppendTableRow(tds, this.TBodySelector);

@@ -7,6 +7,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="CSS/Bootstrap.Flatly.min.css" />
     <link rel="stylesheet" href="CSS/ChessScoreboard.css" />
 </head>
@@ -16,7 +18,7 @@
         <div class="d-flex justify-content-end flex-nowrap">
             <ul class="navbar-nav ml-auto text-center flex-row">
                 <li class="nav-item p-1"><a class="nav-link" onclick="addGameModal(event)">Add Game</a></li>
-                <li class="nav-item p-1"><a class="nav-link">Add Player</a></li>
+                <li class="nav-item p-1 d-none"><a class="nav-link">Add Player</a></li>
             </ul>
         </div>
         <div id="ChessLogoDiv">
@@ -27,29 +29,40 @@
         <div class="d-flex justify-content-start">
             <ul class="navbar-nav mr-auto text-center flex-row">
                 <li class="nav-item">
-                    <a class="nav-link p-1" href="#">Recalculate Ratings</a>
+                    <a class="nav-link p-1 d-none" href="#">Recalculate Ratings</a>
                 </li>
             </ul>
         </div>
     </nav>
 
     <main>
-        <div class="container">
-            <div class="row">
-                    <div class="col-6">
-                        <table id="Games" class="table table-striped">
-                            <thead class="table-primary"></thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                <div class="col-6">
-                    <table id="Players" class="table table-striped">
-                        <thead class="table-primary"></thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
+        <section class="border-primary m-2">
+            <a class="pl-3 pr-3 btn-primary rounded-0" data-toggle="collapse" href="#PlayersDiv" onclick="toggleUpDownCaret(this)">
+                Players
+                <i class="fas fa-2x fa-caret-up d-none"></i>
+                <i class="fas fa-2x fa-caret-down d-block"></i>
+            </a>
+            <div id="PlayersDiv" class="p-4">
+                <table id="Players" class="collapse show table table-striped">
+                    <thead class="table-primary"></thead>
+                    <tbody class="table-bordered"></tbody>
+                </table>
             </div>
-        </div>
+        </section>
+
+        <section class="border-primary m-2">
+            <a class="pl-3 pr-3 btn-primary rounded-0" data-toggle="collapse" href="#GamesDiv" onclick="toggleUpDownCaret(this)">
+                Games
+                <i class="fas fa-2x fa-caret-up d-none"></i>
+                <i class="fas fa-2x fa-caret-down d-block"></i>
+            </a>
+            <div id="GamesDiv" class="p-4">
+                <table id="Games" class="collapse show table table-striped">
+                    <thead class="table-primary"></thead>
+                    <tbody class="table-bordered align-middle"></tbody>
+                </table>
+            </div>
+        </section>
 
         <!-- Modal -->
         <div class="modal fade" id="AddGameModal" tabindex="-1" role="dialog" aria-labelledby="AddGameModalTitle"
