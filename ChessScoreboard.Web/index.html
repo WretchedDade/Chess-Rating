@@ -17,7 +17,7 @@
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-primary d-flex justify-content-between">
         <div class="d-flex justify-content-end flex-nowrap">
             <ul class="navbar-nav ml-auto text-center flex-row">
-                <li class="nav-item p-1"><a class="nav-link" onclick="addGameModal(event)">Add Game</a></li>
+                <li class="nav-item p-1"><a class="nav-link" onclick="OpenAddGameModal(event)">Add Game</a></li>
                 <li class="nav-item p-1 d-none"><a class="nav-link">Add Player</a></li>
             </ul>
         </div>
@@ -37,7 +37,7 @@
 
     <main>
         <section class="border-primary m-2">
-            <a class="pl-3 pr-3 btn-primary rounded-0" data-toggle="collapse" href="#PlayersDiv" onclick="toggleUpDownCaret(this)">
+            <a class="pl-3 pr-3 btn-primary rounded-0" data-toggle="collapse" href="#PlayersDiv" onclick="ToggleUpDownCaret(this)">
                 Players
                 <i class="fas fa-2x fa-caret-up d-none"></i>
                 <i class="fas fa-2x fa-caret-down d-block"></i>
@@ -51,7 +51,7 @@
         </section>
 
         <section class="border-primary m-2">
-            <a class="pl-3 pr-3 btn-primary rounded-0" data-toggle="collapse" href="#GamesDiv" onclick="toggleUpDownCaret(this)">
+            <a class="pl-3 pr-3 btn-primary rounded-0" data-toggle="collapse" href="#GamesDiv" onclick="ToggleUpDownCaret(this)">
                 Games
                 <i class="fas fa-2x fa-caret-up d-none"></i>
                 <i class="fas fa-2x fa-caret-down d-block"></i>
@@ -114,7 +114,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="addGame(event)">Add Game</button>
+                        <button type="button" class="btn btn-primary" onclick="AddGameClick(event)">Add Game</button>
                     </div>
                 </div>
             </div>
@@ -124,6 +124,7 @@
     <script src="JS/Jquery-3.3.1.min.js"></script>
     <script src="JS/Popper.min.js"></script>
     <script src="JS/Bootstrap.min.js"></script>
+    <script src="JS/RatingCalculator.js"></script>
     <script src="JS/Sheet.js"></script>
     <script src="JS/SheetsTable.js"></script>
     <script src="JS/ChessScoreboard.js"></script>

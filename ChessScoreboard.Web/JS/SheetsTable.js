@@ -33,9 +33,7 @@ class SheetsTable {
                 return;
             }
 
-            parent.RefreshTable().then(function () {
-                setTimeout(parent.RefreshFunction, 25);
-            });
+            parent.RefreshTable().then(parent.RefreshFunction);
         });
     }
 
