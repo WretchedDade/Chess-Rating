@@ -1,0 +1,54 @@
+body main {
+    padding: 20px;
+    padding-top: 60px;
+}
+
+a {
+    cursor: pointer;
+}
+
+nav {
+    border-bottom: 2px solid white;
+    height: 40px;
+}
+
+nav #ChessLogo {
+    background-image: url("../IMG/ChessLogo.png");
+    background-position: center;
+    background-size: 100px 100px;
+    border: 10px solid white;
+    height: 120px;
+    width: 120px;
+}
+
+nav #ChessLogoDiv {
+    left: Calc(Calc(100% - 120px) / 2);
+    position: absolute;
+}
+
+#WinnerNumber,
+#LoserNumber {
+    width: 185px;
+}
+
+section{
+    border: 2px solid gray;
+}
+
+section a{
+    align-items: center;
+    border-bottom: 2px dashed gray;
+    display: flex;
+    font-size: 1.5em;
+    justify-content: space-between;
+    width: 100%;
+}
+
+section a:hover{
+    text-decoration: none;
+}
+
+section a:focus{
+    box-shadow: none !important;
+    outline: 0;
+}
