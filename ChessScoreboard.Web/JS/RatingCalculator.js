@@ -16,17 +16,17 @@ class RatingCalculator {
      * @param {Ratings} ratings The original ratings of the players involved in the match. If the match was a draw, winner and loser is irrelevant
      */
     GetNewRatings(gameWasADraw, ratings) {
-        var wTransformed = GetTransformedRating(ratings.WinnersRating);
-        var lTransformed = GetTransformedRating(ratings.LosersRating);
+        var wTransformed = this.GetTransformedRating(ratings.WinnersRating);
+        var lTransformed = this.GetTransformedRating(ratings.LosersRating);
 
-        var expectedScores = GetExpectedScores(wTransformed, lTransformed);
+        var expectedScores = this.GetExpectedScores(wTransformed, lTransformed);
 
-        var actualScores = GetActualScores(gameWasADraw);
+        var actualScores = this.GetActualScores(gameWasADraw);
 
-        var wRating = GetNewRating(ratings.WinnersRating, actualScores.Winners, expectedScores.Winners);
-        var lRating = GetNewRating(ratings.LosersRating, actualScores.Losers, expectedScores.Losers);
+        var wRating = this.GetNewRating(ratings.WinnersRating, actualScores.Winners, expectedScores.Winners);
+        var lRating = this.GetNewRating(ratings.LosersRating, actualScores.Losers, expectedScores.Losers);
 
-        return new Scores(wRating.toFixed(2), lRating.toFixed(2));
+        return new Ratings(parseFloat(wRating.toFixed(2)), parseFloat(lRating.toFixed(2)));
     }
 
     /**

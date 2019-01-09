@@ -110,16 +110,28 @@ class SheetsTable {
     }
 
     AddRow(columns) {
-        this.Values.push(columns);
+        return new Promise((resolve, reject) => {
+            this.Values.push(columns);
 
-        var valueRangeBody = {
-            values: this.Values
-        };
+            var valueRangeBody = {
+                values: this.Values
+            };
 
-        var parent = this;
-        this.Sheet.Put(this.Range, valueRangeBody).then(function (response) {
-            $.get(parent.Sheet.AppScriptUrl);
-            parent.Refresh();
+            var parent = this;
+            this.Sheet.Put(this.Range, valueRangeBody).then(function (response) {
+                parent.SendGetRequestToAppScriptUrl();
+                parent.Refresh();
+            });
+
+            resolve();
+        });
+    }
+
+    SendGetRequestToAppScriptUrl() {
+        return $.ajax({
+            url: this.Sheet.AppScriptUrl,
+            type: 'GET',
+            dataType: 'jsonp'
         });
     }
 }

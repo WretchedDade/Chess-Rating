@@ -1,17 +1,13 @@
-const API_KEY = 'AIzaSyCdkEsPqNU-Xc_7CwQp-kM1hmq_F7rRhgw';
-const SPREADSHEET_ID = '1EcjGl22n3CaxF9x0BJzPaNBxi8C3C-uMqWsxtmkkFTs';
-const CLIENT_ID = '265091334368-ur3uolm45a8rg391kmuq212neieivkq5.apps.googleusercontent.com';
-const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwmHZ1RfKVmOlUg6tbMHVQkTMWA-I-guaQm-U1dNiq6-7eisjg/exec';
-
 var Calculator;
 var GamesTable;
 var PlayersTable;
 var AddGamePlayersTable;
 var ChessScoreboardSheet;
+var Constants = new ChessScoreboardConstants();
 
 function init() {
-    Calculator = new RatingCalculator(100, 400);
-    ChessScoreboardSheet = new Sheet(API_KEY, SPREADSHEET_ID, CLIENT_ID, APP_SCRIPT_URL);
+    Calculator = new RatingCalculator(Constants.KFactor, Constants.BaseRating);
+    ChessScoreboardSheet = new Sheet(Constants.APIKey, Constants.SpreadsheetId, Constants.ClientId, Constants.AppScriptUrl);
     ChessScoreboardSheet.Connect(function () {
         if (ChessScoreboardSheet.UserIsSignedIn) {
             GamesTable = new SheetsTable('Games!$B$2:$D$201', ChessScoreboardSheet, '#Games', ['#', 'Winner', 'Loser', 'Was Stalemate'], GamesTableRefreshCallback);
@@ -81,7 +77,7 @@ function AddGameClick(event) {
 
     var newRow = [winner, loser, wasStalemate]
 
-    GamesTable.AddRow(newRow);
+    GamesTable.AddRow(newRow).then(Recalculate);
 
     $('#AddGameModal').modal('hide');
 }
@@ -93,4 +89,71 @@ function ToggleUpDownCaret(anchor) {
         icon.toggleClass('d-none');
         icon.toggleClass('d-block');
     });
+}
+
+function RecalculateClick(event) {
+    event.preventDefault();
+    Recalculate();
+}
+
+function Recalculate() {
+    var games = GamesTable.Values;
+    var players = PlayersTable.Values;
+
+    players.shift(); //Get rid of header row
+
+    for (var i = 0; i < players.length; i++)
+        players[i][Constants.PlayersRatingIndex] = Calculator.BaseRating;
+
+    var winnersIndex, losersIndex, winnersRating, losersRating, wasStalemate;
+    for (var i = 0; i < games.length; i++) {
+        winnersIndex = FindPlayersIndexByName(players, games[i][Constants.GamesWinnerIndex]);
+        winnersRating = players[winnersIndex][Constants.PlayersRatingIndex];
+
+        losersIndex = FindPlayersIndexByName(players, games[i][Constants.GamesLoserIndex]);
+        losersRating = players[losersIndex][Constants.PlayersRatingIndex];
+
+        wasStalemate = games[i][Constants.GamesWasStalemateIndex].toString().toLowerCase() === 'true';
+
+        var newRatings = Calculator.GetNewRatings(wasStalemate, new Ratings(winnersRating, losersRating));
+
+        players[winnersIndex][Constants.PlayersRatingIndex] = newRatings.WinnersRating;
+        players[losersIndex][Constants.PlayersRatingIndex] = newRatings.LosersRating;
+    }
+
+    UpdatePlayerRatingsInSpreadsheet(players);
+}
+
+function UpdatePlayerRatingsInSpreadsheet(players) {
+    var ratings = players.map(function (value) {
+        return [value[Constants.PlayersRatingIndex]];
+    });
+
+    var valueRangeBody = {
+        values: ratings
+    };
+
+
+    PlayersTable.Sheet.Put('Players!$F$2:$F$201', valueRangeBody).then(function (response) {
+        PlayersTable.SendGetRequestToAppScriptUrl().always(function () {
+            setTimeout(function () {
+                PlayersTable.Refresh();
+            }, 100);
+        });
+    });
+}
+
+
+function FindPlayersIndexByName(players, name) {
+    for (var i = 0; i < players.length; i++)
+        if (players[i][Constants.PlayersNameIndex].toLowerCase() === name.toLowerCase())
+            return i;
+}
+
+class Game {
+    constructor(winner, loser, wasStalemate) {
+        this.WinnersName = winner;
+        this.LosersName = loser;
+        this.WasStalemate = wasStalemate;
+    }
 }

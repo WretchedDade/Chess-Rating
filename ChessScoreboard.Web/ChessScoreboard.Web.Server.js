@@ -29,9 +29,9 @@ const server = http.createServer((request, response) => {
 
 function getContentType(url) {
   var dotOffset = url.lastIndexOf('.');
-  var extension = dotOffset == -1 ? 'text/plain' : url.substr(dotOffset);
+  var extension = dotOffset == -1 ? '.html' : url.substr(dotOffset);
 
-  var extensionToMimeType = {
+  var extensionToContentType = {
     '.html': 'text/html',
     '.ico': 'image/x-icon',
     '.jpg': 'image/jpeg',
@@ -40,8 +40,10 @@ function getContentType(url) {
     '.css': 'text/css',
     '.js': 'text/javascript'
   }
-  
-  return extensionToMimeType[extension];
+
+  var contentType = extensionToContentType[extension];
+
+  return contentType ? contentType : 'text/plain';
 }
 
 server.listen(port, hostName, () => {
