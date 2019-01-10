@@ -1,12 +1,12 @@
-const fs = require('fs');
-const http = require('http');
+const Http = require('http');
+const FileServer = require('fs');
 
-const hostName = 'localhost';
-const port = 8000;
+const HostName = 'localhost';
+const PortNumber = 8000;
 
-const server = http.createServer((request, response) => {
+const server = Http.createServer((request, response) => {
   if (request.url == '' || request.url == '/') {
-    fs.readFile('index.html', function (err, html) {
+    FileServer.readFile('index.html', function (err, html) {
       response.writeHead(200, {
         'Content-Type': 'text/html'
       });
@@ -15,7 +15,7 @@ const server = http.createServer((request, response) => {
     });
 
   } else {
-    fs.readFile('./' + request.url, function (error, content) {
+    FileServer.readFile('./' + request.url, function (error, content) {
       if (!error) {
         response.setHeader('Content-type', getContentType(request.url));
         response.end(content);
@@ -46,6 +46,6 @@ function getContentType(url) {
   return contentType ? contentType : 'text/plain';
 }
 
-server.listen(port, hostName, () => {
-  console.log(`Server running at http://${hostName}:${port}/`);
+server.listen(PortNumber, HostName, () => {
+  console.log(`Server running at http://${HostName}:${PortNumber}/`);
 });
