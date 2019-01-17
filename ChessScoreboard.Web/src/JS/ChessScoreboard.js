@@ -138,7 +138,9 @@ function UpdatePlayerRatingsInSpreadsheet(players) {
         PlayersTable.SendGetRequestToAppScriptUrl().always(function () {
             setTimeout(function () {
                 PlayersTable.Refresh();
-            }, 100);
+                GamesTable.Refresh();
+                AddGamePlayersTable.Refresh();
+            }, 1000);
         });
     });
 }
