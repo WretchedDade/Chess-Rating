@@ -1,6 +1,6 @@
 const faSize = 'fa fa-2x';
 const faSquare = `${faSize} fa-square`;
-const faCheckSqare = `${faSize} fa-check-square`;
+const faCheckSquare = `${faSize} fa-check-square`;
 
 class SheetsTable {
     constructor(range, sheet, tableSelector, headings, refreshFunction) {
@@ -95,7 +95,7 @@ class SheetsTable {
             value = row[i].toLowerCase();
 
             if (value === 'true' || value === 'false')
-                tds += `<td class="text-center text-primary align-middle"><i class="${value == 'true' ? faCheckSqare : faSquare}"></i></td>`;
+                tds += `<td class="text-center text-primary align-middle"><i class="${value == 'true' ? faCheckSquare : faSquare}"></i></td>`;
             else if (isNaN(value) && !value.includes('%'))
                 tds += `<td class="align-middle">${row[i]}</td>`;
             else
